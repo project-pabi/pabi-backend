@@ -1,5 +1,6 @@
-rootProject.name = "pabi-backend"
+rootProject.name = "pabiBackend"
 
+include("server")
 include(
     "user",
     "user:presentation",
