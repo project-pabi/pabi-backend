@@ -1,4 +1,4 @@
-rootProject.name = "pabiBackend"
+rootProject.name = "pabi-backend"
 
 include("server")
 include(

@@ -1,4 +1,4 @@
-package com.pabi.pabibackend
+package com.pabi.server
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
