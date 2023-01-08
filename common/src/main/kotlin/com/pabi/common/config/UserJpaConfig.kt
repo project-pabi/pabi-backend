@@ -1,4 +1,4 @@
-package com.pabi.user.infrastructure
+package com.pabi.common.config
 
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Configuration

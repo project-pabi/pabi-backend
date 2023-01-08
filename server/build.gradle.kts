@@ -1,4 +1,6 @@
 dependencies {
+    implementation(project(":common"))
+    
     implementation(project(":user:infrastructure"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
