@@ -2,7 +2,6 @@ package com.pabi.user.presentation
 
 import com.pabi.user.application.SignUpUserDto
 import com.pabi.user.application.SignUpUserDto.SignUpUserCommand
-import io.swagger.annotations.ApiModelProperty
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
@@ -10,17 +9,14 @@ import javax.validation.constraints.Size
 class SignUpUserDto {
 
     data class SignUpUserRequest(
-        @ApiModelProperty(value = "이메일 아이디", example = "test@gmail.com", required = true)
         @Email(message = "이메일 형식이 아닙니다.")
         @NotBlank(message = "아이디를 입력해 주세요.")
         val email: String,
 
-        @ApiModelProperty(value = "비밀번호", example = "test12!@", required = true)
         @Size(min = 8, max = 20, message = "8~20자 이내로 입력해 주세요.")
         @NotBlank(message = "비밀번호를 입력해 주세요.")
         val password: String,
 
-        @ApiModelProperty(value = "닉네임", example = "닉네임", required = true)
         @NotBlank(message = "닉네임을 입력해 주세요.")
         val nickName: String,
     ) {
@@ -35,13 +31,10 @@ class SignUpUserDto {
     }
 
     data class SignUpUserResponse(
-        @ApiModelProperty(value = "PK ID", required = true)
         val id: Long,
 
-        @ApiModelProperty(value = "이메일 아이디", required = true)
         val email: String,
 
-        @ApiModelProperty(value = "닉네임", required = true)
         val nickName: String,
     ) {
 
