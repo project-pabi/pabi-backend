@@ -4,6 +4,7 @@ import com.pabi.common.response.CommonResponse
 import com.pabi.user.application.SignUpUserFacade
 import com.pabi.user.presentation.SignUpUserDto.SignUpUserRequest
 import com.pabi.user.presentation.SignUpUserDto.SignUpUserResponse
+import io.swagger.annotations.ApiOperation
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,6 +18,7 @@ class SignUpUserController(
 ) {
 
     @PostMapping
+    @ApiOperation(value = "유저 생성")
     fun signUp(@Valid @RequestBody request: SignUpUserRequest): CommonResponse<SignUpUserResponse> {
         val command = request.toCommand()
         val info = signUpUserFacade.signUp(command)
