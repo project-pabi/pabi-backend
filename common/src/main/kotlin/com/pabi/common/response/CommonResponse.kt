@@ -1,5 +1,7 @@
 package com.pabi.common.response
 
+import com.pabi.common.exception.ErrorCode
+
 data class CommonResponse<T>(
     val result: Result,
     val data: T?,
@@ -16,6 +18,24 @@ data class CommonResponse<T>(
                 data = data,
                 message = "",
                 errorCode = null,
+            )
+        }
+
+        fun fail(message: String, exceptionName: String): CommonResponse<Nothing> {
+            return CommonResponse(
+                result = Result.FAIL,
+                data = null,
+                message = message,
+                errorCode = exceptionName,
+            )
+        }
+
+        fun fail(errorCode: ErrorCode): CommonResponse<Nothing> {
+            return CommonResponse(
+                result = Result.FAIL,
+                data = null,
+                message = errorCode.getErrorMsg(),
+                errorCode = errorCode.name,
             )
         }
     }

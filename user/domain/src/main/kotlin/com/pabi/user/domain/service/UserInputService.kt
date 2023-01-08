@@ -1,5 +1,7 @@
 package com.pabi.user.domain.service
 
+import com.pabi.common.exception.DuplicateUserEmailException
+import com.pabi.common.exception.DuplicateUserNickNameException
 import com.pabi.user.domain.entity.User
 import com.pabi.user.domain.repository.UserRepository
 import org.springframework.stereotype.Service
@@ -13,11 +15,11 @@ class UserInputService(
         with(user) {
             userRepository.findByNickNameAndEmail(nickName, email)?.let {
                 if (it.nickName == nickName) {
-                    throw Exception()
+                    throw DuplicateUserNickNameException()
                 }
 
                 if (it.email == email) {
-                    throw Exception()
+                    throw DuplicateUserEmailException()
                 }
             }
 

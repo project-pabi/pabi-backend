@@ -3,5 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":common"))
+
     implementation("javax.persistence:javax.persistence-api:2.2")
 }
