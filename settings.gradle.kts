@@ -1,6 +1,7 @@
 rootProject.name = "pabi-backend"
 
 include("server")
+include("common")
 include(
     "user",
     "user:presentation",
