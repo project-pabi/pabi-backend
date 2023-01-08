@@ -28,6 +28,9 @@ subprojects {
     java.targetCompatibility = JavaVersion.VERSION_11
 
     dependencies {
+        // kotlin 로깅
+        implementation("io.github.microutils:kotlin-logging:1.12.5")
+
         implementation("org.springframework.boot:spring-boot-starter")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
