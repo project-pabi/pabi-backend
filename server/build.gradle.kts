@@ -1,9 +1,7 @@
 dependencies {
-    implementation(project(":common"))
+    implementation(project(path = ":common", configuration = "default"))
     
     implementation(project(":user:infrastructure"))
-
-    implementation("org.springframework.boot:spring-boot-starter-web")
 
     // mysql
     implementation("mysql:mysql-connector-java")
