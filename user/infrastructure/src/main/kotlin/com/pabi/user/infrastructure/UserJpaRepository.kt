@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface UserJpaRepository : JpaRepository<User, Long> {
 
     fun findByIdAndWithdrawalFalse(userId: Long): User?
-    fun findByNickNameAndEmail(nickName: String, email: String): User?
+    fun findByNickNameOrEmail(nickName: String, email: String): User?
 }

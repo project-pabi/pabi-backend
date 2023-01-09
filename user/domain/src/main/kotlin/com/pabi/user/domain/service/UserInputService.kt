@@ -13,7 +13,7 @@ class UserInputService(
 
     fun inputUser(user: User): User {
         with(user) {
-            userRepository.findByNickNameAndEmail(nickName, email)?.let {
+            userRepository.findByNickNameOrEmail(nickName, email)?.let {
                 if (it.nickName == nickName) {
                     throw DuplicateUserNickNameException()
                 }

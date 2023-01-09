@@ -13,8 +13,8 @@ class UserRepositoryImpl(
         return userJpaRepository.findByIdAndWithdrawalFalse(userId)
     }
 
-    override fun findByNickNameAndEmail(nickName: String, email: String): User? {
-        return userJpaRepository.findByNickNameAndEmail(nickName, email)
+    override fun findByNickNameOrEmail(nickName: String, email: String): User? {
+        return userJpaRepository.findByNickNameOrEmail(nickName, email)
     }
 
     override fun save(user: User): User {
