@@ -3,10 +3,10 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/pabi?characterEncoding=UTF-8
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:54320/pabi
     username: root
     password: pabi-be
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
