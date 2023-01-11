@@ -10,23 +10,18 @@ services:
       - USE_PROFILE=prod
     restart: always
   pabi-db:
-    image: mysql:8.0
+    image: postgres:14.6
     platform: linux/amd64
     ports:
-      - "3306:3306"
+      - "54320:54320"
     environment:
-      - MYSQL_DATABASE=pabi
-      - MYSQL_ROOT_PASSWORD=pabi-be
-      - MYSQL_USER=pabi-user
-      - MYSQL_PASSWORD=pabi-pw
+      - POSTGRES_DB=pabi
+      - POSTGRES_ROOT_PASSWORD=pabi-be
+      - POSTGRES_USER=pabi-user
+      - POSTGRES_PASSWORD=pabi-pw
       - TZ=UTC
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      - --lower_case_table_names=1
-      - --default-authentication-plugin=mysql_native_password
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./postgres:/var/lib/postgres
   pabi-redis:
     image: redis:6.0.2
     command: redis-server /usr/local/etc/redis/redis.conf --port 6379
