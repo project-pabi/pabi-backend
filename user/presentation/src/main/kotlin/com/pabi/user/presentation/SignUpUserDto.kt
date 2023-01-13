@@ -26,6 +26,12 @@ class SignUpUserDto {
         val nickName: String,
     ) {
 
+        constructor(): this (
+            email = "",
+            password = "",
+            nickName = "",
+        )
+
         fun toCommand(): SignUpUserCommand {
             return SignUpUserCommand(
                 email = email,
