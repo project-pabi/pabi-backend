@@ -1,5 +1,7 @@
 package com.pabi.common.jwt
 
+import com.pabi.common.enum.Role
+import com.pabi.common.response.Token
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
@@ -36,6 +38,13 @@ class TokenProvider(
     }
 
     private val log = KotlinLogging.logger {}
+
+    fun createTokens(email: String, roles: List<Role>): Token {
+        val claims: MutableMap<String, Any?> = HashMap()
+        claims["roles"] = roles
+
+        return doGenerateToken(claims, email)
+    }
 
     override fun afterPropertiesSet() {
         val keyBytes = Decoders.BASE64.decode(secret)
@@ -82,6 +91,37 @@ class TokenProvider(
             log.info("JWT 토큰이 잘못되었습니다.")
         }
         return false
+    }
+
+    private fun doGenerateToken(claims: Map<String, Any?>, email: String): Token {
+        val createdDate = Date()
+        val accessTokenExpirationDate =
+            Date(createdDate.time + accessTokenValidityInMilliseconds * 1000)
+        val refreshTokenExpirationDate =
+            Date(createdDate.time + refreshTokenValidityInMilliseconds * 1000)
+
+        val accessToken = Jwts.builder()
+            .setClaims(claims)
+            .setSubject(email)
+            .setIssuedAt(createdDate)
+            .setExpiration(accessTokenExpirationDate)
+            .signWith(key)
+            .compact()
+        val refreshToken = Jwts.builder()
+            .setClaims(claims)
+            .setSubject(email)
+            .setIssuedAt(createdDate)
+            .setExpiration(refreshTokenExpirationDate)
+            .signWith(key)
+            .compact()
+
+        return Token(
+            accessToken,
+            refreshToken,
+            "Bearer",
+            accessTokenValidityInMilliseconds,
+            createdDate
+        )
     }
 
     companion object {

@@ -1,7 +1,7 @@
 package com.pabi.user.presentation
 
 import com.pabi.user.domain.dto.SignInUserDto.*
-import com.pabi.user.presentation.common.Token
+import com.pabi.common.response.Token
 import io.swagger.annotations.ApiModelProperty
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -42,7 +42,7 @@ class SignInUserDto {
         constructor(
             signInUserInfo: SignInUserInfo
         ) : this(
-            token = Token(signInUserInfo.token)
+            token = signInUserInfo.token
         )
     }
 }

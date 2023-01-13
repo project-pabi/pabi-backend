@@ -1,5 +1,6 @@
 package com.pabi.user.domain.dto
 
+import com.pabi.common.enum.Role
 import com.pabi.user.domain.entity.User
 
 class SignUpUserDto {
@@ -14,6 +15,7 @@ class SignUpUserDto {
                 email = email,
                 nickName = nickName,
                 password = password,
+                roles = listOf(Role.ROLE_USER).joinToString(",") { it.toString() },
             )
         }
     }

@@ -1,6 +1,7 @@
 package com.pabi.user.domain.dto
 
-import com.pabi.user.domain.dto.common.Token
+import com.pabi.common.response.Token
+
 
 class SignInUserDto {
 
