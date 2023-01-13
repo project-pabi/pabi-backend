@@ -24,4 +24,6 @@ class User (
 
     @Column(columnDefinition = "boolean default false")
     var withdrawal: Boolean = false,
+
+    var roles: String,
 )
