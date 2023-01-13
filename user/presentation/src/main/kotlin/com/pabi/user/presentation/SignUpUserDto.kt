@@ -1,7 +1,8 @@
 package com.pabi.user.presentation
 
-import com.pabi.user.application.SignUpUserDto
-import com.pabi.user.application.SignUpUserDto.SignUpUserCommand
+
+import com.pabi.user.domain.dto.SignUpUserDto.SignUpUserCommand
+import com.pabi.user.domain.dto.SignUpUserDto.SignUpUserInfo
 import io.swagger.annotations.ApiModelProperty
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -46,7 +47,7 @@ class SignUpUserDto {
     ) {
 
         constructor(
-            signUpUserInfo: SignUpUserDto.SignUpUserInfo
+            signUpUserInfo: SignUpUserInfo
         ) : this(
             id = signUpUserInfo.id,
             email = signUpUserInfo.email,
