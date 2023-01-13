@@ -8,21 +8,16 @@ import javax.validation.constraints.Email
 class ModifyUserDto {
 
     data class ModifyUserRequest(
-        @Email(message = "이메일 형식이 아닙니다.")
-        @ApiModelProperty(value = "이메일 아이디", required = true, example = "test@gmail.com")
-        val email: String,
         @ApiModelProperty(value = "닉네임", required = true, example = "닉네임수정")
         val nickName: String,
     ) {
 
         constructor() : this(
-            email = "",
             nickName = "",
         )
 
         fun toCommand(): ModifyUserCommand {
             return ModifyUserCommand(
-                email = email,
                 nickName = nickName,
             )
         }

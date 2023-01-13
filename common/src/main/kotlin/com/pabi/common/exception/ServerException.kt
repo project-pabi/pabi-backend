@@ -18,9 +18,13 @@ data class NotFoundUserEmailException(
 ) : ServerException(200, message)
 
 data class NotFoundUserException(
-    override val message: String = "존해 하지 않는 유저 입니다."
+    override val message: String = "존재 하지 않는 유저 입니다."
 ) : ServerException(200, message)
 
 data class InvalidPasswordException(
     override val message: String = "패스워드가 일치 하지 않습니다."
+) : ServerException(200, message)
+
+data class WithdrawalUserException(
+    override val message: String = "탈퇴한 유저 입니다."
 ) : ServerException(200, message)
