@@ -12,4 +12,7 @@ dependencies {
 
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
+
+    // redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 }
