@@ -1,4 +1,4 @@
-package com.pabi.user.application
+package com.pabi.user.domain.dto
 
 import com.pabi.user.domain.entity.User
 
