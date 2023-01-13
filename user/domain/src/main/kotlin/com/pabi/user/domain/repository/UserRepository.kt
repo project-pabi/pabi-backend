@@ -7,4 +7,6 @@ interface UserRepository {
     fun findByIdAndWithdrawalFalse(userId: Long): User?
     fun findByNickNameOrEmail(nickName: String, email: String): User?
     fun save(user: User): User
+
+    fun findByEmail(email: String): User?
 }

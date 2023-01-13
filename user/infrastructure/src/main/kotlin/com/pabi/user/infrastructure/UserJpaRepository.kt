@@ -7,4 +7,6 @@ interface UserJpaRepository : JpaRepository<User, Long> {
 
     fun findByIdAndWithdrawalFalse(userId: Long): User?
     fun findByNickNameOrEmail(nickName: String, email: String): User?
+
+    fun findByEmail(email: String): User?
 }

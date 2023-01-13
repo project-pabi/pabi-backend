@@ -20,4 +20,8 @@ class UserRepositoryImpl(
     override fun save(user: User): User {
         return userJpaRepository.save(user)
     }
+
+    override fun findByEmail(email: String): User? {
+        return userJpaRepository.findByEmail(email)
+    }
 }
