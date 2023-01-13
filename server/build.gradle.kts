@@ -2,6 +2,7 @@ dependencies {
     implementation(project(path = ":common", configuration = "default"))
     
     implementation(project(":user:infrastructure"))
+    implementation(project(":user:domain"))
 
     // mysql
     implementation("mysql:mysql-connector-java")

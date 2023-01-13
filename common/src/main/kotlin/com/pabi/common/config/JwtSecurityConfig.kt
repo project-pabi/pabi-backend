@@ -1,6 +1,7 @@
 package com.pabi.common.config
 
 import com.pabi.common.jwt.JwtFilter
+import com.pabi.common.jwt.JwtUserRepository
 import com.pabi.common.jwt.TokenProvider
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -9,10 +10,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 class JwtSecurityConfig(
     private val tokenProvider: TokenProvider,
+    private val jwtUserRepository: JwtUserRepository,
 ) : SecurityConfigurerAdapter<DefaultSecurityFilterChain?, HttpSecurity>() {
 
     override fun configure(http: HttpSecurity) {
-        val customFilter = JwtFilter(tokenProvider)
+        val customFilter = JwtFilter(tokenProvider, jwtUserRepository)
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 }

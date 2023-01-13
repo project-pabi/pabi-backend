@@ -5,7 +5,6 @@ import com.pabi.user.domain.entity.User
 class ModifyUserDto {
 
     data class ModifyUserCommand(
-        val email: String,
         val nickName: String,
     )
 

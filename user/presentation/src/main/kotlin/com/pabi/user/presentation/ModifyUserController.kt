@@ -21,6 +21,7 @@ class ModifyUserController(
 
     @PatchMapping
     @ApiOperation(value = "유저 수정")
+    @PreAuthorize("hasRole('USER')")
     fun modifyUser(principal: Principal, @Valid @RequestBody request: ModifyUserRequest):
             CommonResponse<ModifyUserResponse> {
         val command = request.toCommand()

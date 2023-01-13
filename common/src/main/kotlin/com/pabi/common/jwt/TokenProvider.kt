@@ -1,6 +1,5 @@
 package com.pabi.common.jwt
 
-import com.pabi.common.enum.Role
 import com.pabi.common.response.Token
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
@@ -39,7 +38,7 @@ class TokenProvider(
 
     private val log = KotlinLogging.logger {}
 
-    fun createTokens(email: String, roles: List<Role>): Token {
+    fun createTokens(email: String, roles: String): Token {
         val claims: MutableMap<String, Any?> = HashMap()
         claims[AUTHORITIES_KEY] = roles
 
@@ -53,6 +52,10 @@ class TokenProvider(
 
     fun getAllClaimsFromToken(token: String?): Claims {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
+    }
+
+    fun getEmailFromToken(token: String): String {
+        return getAllClaimsFromToken(token).subject
     }
 
     fun getAuthentication(token: String?): Authentication {

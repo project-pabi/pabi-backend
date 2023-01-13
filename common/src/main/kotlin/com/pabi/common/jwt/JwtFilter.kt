@@ -11,7 +11,8 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
 class JwtFilter(
-    private val tokenProvider: TokenProvider
+    private val tokenProvider: TokenProvider,
+    private val jwtUserRepository: JwtUserRepository,
 ) : GenericFilterBean() {
 
     private val log = KotlinLogging.logger {}
@@ -23,13 +24,13 @@ class JwtFilter(
         val httpServletRequest = servletRequest as HttpServletRequest
         val requestURI = httpServletRequest.requestURI
         val jwt = resolveToken(httpServletRequest)
+
+
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) { // 토큰의 유효성이 검증됐을 경우,
-            val authentication: Authentication = tokenProvider.getAuthentication(jwt)
-            SecurityContextHolder.getContext().authentication = authentication
-            log.debug(
-                "Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.name,
-                requestURI
-            )
+            if (jwtUserRepository.validTokenByEmail(tokenProvider.getEmailFromToken(jwt!!))) {
+                val authentication: Authentication = tokenProvider.getAuthentication(jwt)
+                SecurityContextHolder.getContext().authentication = authentication
+            }
         } else {
             log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI)
         }

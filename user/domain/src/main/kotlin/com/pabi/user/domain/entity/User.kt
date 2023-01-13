@@ -1,13 +1,12 @@
 package com.pabi.user.domain.entity
 
-import com.pabi.user.domain.dto.ModifyUserDto
-import com.pabi.user.domain.dto.ModifyUserDto.*
+import com.pabi.user.domain.dto.ModifyUserDto.ModifyUserCommand
 import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "users")
-class User (
+class User(
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +30,6 @@ class User (
 ) {
 
     fun modifyUser(request: ModifyUserCommand) {
-        email = request.email
         nickName = request.nickName
     }
 }
