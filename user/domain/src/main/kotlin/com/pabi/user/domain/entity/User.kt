@@ -1,5 +1,7 @@
 package com.pabi.user.domain.entity
 
+import com.pabi.user.domain.dto.ModifyUserDto
+import com.pabi.user.domain.dto.ModifyUserDto.*
 import java.util.*
 import javax.persistence.*
 
@@ -26,4 +28,10 @@ class User (
     var withdrawal: Boolean = false,
 
     var roles: String,
-)
+) {
+
+    fun modifyUser(request: ModifyUserCommand) {
+        email = request.email
+        nickName = request.nickName
+    }
+}

@@ -41,7 +41,7 @@ class TokenProvider(
 
     fun createTokens(email: String, roles: List<Role>): Token {
         val claims: MutableMap<String, Any?> = HashMap()
-        claims["roles"] = roles
+        claims[AUTHORITIES_KEY] = roles
 
         return doGenerateToken(claims, email)
     }
@@ -125,6 +125,6 @@ class TokenProvider(
     }
 
     companion object {
-        private const val AUTHORITIES_KEY = "cp"
+        private const val AUTHORITIES_KEY = "roles"
     }
 }

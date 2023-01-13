@@ -3,7 +3,6 @@ package com.pabi.common.config
 import com.pabi.common.jwt.JwtAccessDeniedHandler
 import com.pabi.common.jwt.JwtAuthenticationEntryPoint
 import com.pabi.common.jwt.TokenProvider
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties
 class SecurityConfig(
     val tokenProvider: TokenProvider,
     val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
