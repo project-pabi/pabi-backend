@@ -1,5 +1,7 @@
 package com.pabi.user.domain.entity
 
+import com.pabi.common.exception.InvalidPasswordException
+import com.pabi.common.exception.WithdrawalUserException
 import com.pabi.user.domain.dto.ModifyUserDto.ModifyUserCommand
 import java.util.*
 import javax.persistence.*
@@ -28,6 +30,16 @@ class User(
 
     var roles: String,
 ) {
+
+    fun signIn(password: String) {
+        if (this.password != password) {
+            throw InvalidPasswordException()
+        }
+
+        if (this.withdrawal) {
+            throw WithdrawalUserException()
+        }
+    }
 
     fun modifyUser(request: ModifyUserCommand) {
         nickName = request.nickName

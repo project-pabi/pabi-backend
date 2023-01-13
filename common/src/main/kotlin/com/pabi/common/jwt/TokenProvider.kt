@@ -27,7 +27,7 @@ class TokenProvider(
 ) : InitializingBean {
     private val tokenValidityInMilliseconds: Long
     private val accessTokenValidityInMilliseconds: Long
-    private val refreshTokenValidityInMilliseconds: Long
+    val refreshTokenValidityInMilliseconds: Long
     private var key: Key? = null
 
     init {
