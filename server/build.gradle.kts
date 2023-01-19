@@ -4,6 +4,7 @@ dependencies {
     implementation(project(":user:infrastructure"))
     implementation(project(":user:domain"))
 
+    runtimeOnly("org.postgresql:postgresql")
     // mysql
     implementation("mysql:mysql-connector-java")
 }

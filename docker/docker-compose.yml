@@ -11,17 +11,15 @@ services:
     restart: always
   pabi-db:
     image: postgres:14.6
-    platform: linux/amd64
     ports:
-      - "54320:54320"
+      - "54320:5432"
     environment:
       - POSTGRES_DB=pabi
-      - POSTGRES_ROOT_PASSWORD=pabi-be
       - POSTGRES_USER=pabi-user
       - POSTGRES_PASSWORD=pabi-pw
       - TZ=UTC
     volumes:
-      - ./postgres:/var/lib/postgres
+      - ./postgres:/var/lib/postgresql/data
   pabi-redis:
     image: redis:6.0.2
     command: redis-server /usr/local/etc/redis/redis.conf --port 6379
