@@ -5,8 +5,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:54320/pabi
-    username: root
-    password: pabi-be
+    username: pabi-user
+    password: pabi-pw
   jpa:
     hibernate:
       ddl-auto: update
