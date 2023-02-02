@@ -1,44 +1,70 @@
 package com.pabi.common.jwt
 
+import com.pabi.common.redis.RedisRepository
 import mu.KotlinLogging
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.StringUtils
-import org.springframework.web.filter.GenericFilterBean
+import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
 
 class JwtFilter(
     private val tokenProvider: TokenProvider,
     private val jwtUserRepository: JwtUserRepository,
-) : GenericFilterBean() {
+    private val redisRepository: RedisRepository
+) : OncePerRequestFilter() {
 
     private val log = KotlinLogging.logger {}
+    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+        val requestURI = request.requestURI
 
-    override fun doFilter(
-        servletRequest: ServletRequest, servletResponse: ServletResponse,
-        filterChain: FilterChain
-    ) {
-        val httpServletRequest = servletRequest as HttpServletRequest
-        val requestURI = httpServletRequest.requestURI
-        val jwt = resolveToken(httpServletRequest)
+        val accessToken = resolveToken(request, AUTHORIZATION_HEADER)
+        val refreshToken = resolveToken(request, REFRESHTOKEN_HEADER)
 
-
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) { // 토큰의 유효성이 검증됐을 경우,
-            if (jwtUserRepository.validTokenByEmail(tokenProvider.getEmailFromToken(jwt!!))) {
-                val authentication: Authentication = tokenProvider.getAuthentication(jwt)
-                SecurityContextHolder.getContext().authentication = authentication
+        if (refreshToken == null) {
+            if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
+                if (jwtUserRepository.validTokenByEmail(tokenProvider.getEmailFromToken(accessToken!!))) {
+                    val authentication: Authentication = tokenProvider.getAuthentication(accessToken)
+                    SecurityContextHolder.getContext().authentication = authentication
+                }
+            } else {
+                log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI)
             }
         } else {
-            log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI)
+            tokenProvider.validateToken(refreshToken)
+
+            if (accessToken == null) {
+                log.debug("accessToken 이 존재하지 않습니다., uri: {}", requestURI)
+                return
+            }
+            val email = tokenProvider.getEmailFromToken(accessToken)
+            val refreshTokenInDBMS = redisRepository.getValue(redisRepository.REFRESH_PREFIX + email)
+            if (refreshTokenInDBMS != refreshToken) {
+                log.debug("refreshToken 이 유효하지 않습니다., uri: {}", requestURI)
+                return
+            }
+            val userRoles = jwtUserRepository.userRolesByEmail(email)
+
+            val newAccessToken = tokenProvider.createAccessToken(email, userRoles)
+            val authentication: Authentication = tokenProvider.getAuthentication(accessToken)
+            SecurityContextHolder.getContext().authentication = authentication
+
+            val header = response.getHeader(AUTHORIZATION_HEADER)
+            if (header == null || "" == header) {
+                response.addHeader(AUTHORIZATION_HEADER, newAccessToken)
+            }
         }
-        filterChain.doFilter(servletRequest, servletResponse)
+
+
+
+        filterChain.doFilter(request, response)
     }
 
-    private fun resolveToken(request: HttpServletRequest): String? {
-        val bearerToken = request.getHeader(AUTHORIZATION_HEADER)
+    private fun resolveToken(request: HttpServletRequest, header: String): String? {
+        val bearerToken = request.getHeader(header)
 
         if (!StringUtils.hasText(bearerToken)) {
             return null
@@ -53,5 +79,7 @@ class JwtFilter(
 
     companion object {
         const val AUTHORIZATION_HEADER = "Authorization"
+        const val REFRESHTOKEN_HEADER = "refresh-token"
+
     }
 }

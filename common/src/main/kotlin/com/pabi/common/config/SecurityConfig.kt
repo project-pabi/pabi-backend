@@ -4,6 +4,7 @@ import com.pabi.common.jwt.JwtAccessDeniedHandler
 import com.pabi.common.jwt.JwtAuthenticationEntryPoint
 import com.pabi.common.jwt.JwtUserRepository
 import com.pabi.common.jwt.TokenProvider
+import com.pabi.common.redis.RedisRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -20,6 +21,7 @@ class SecurityConfig(
     val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
     val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
     val jwtUserRepository: JwtUserRepository,
+    val redisRepository: RedisRepository,
 ) : WebSecurityConfigurerAdapter() {
 
     @Bean
@@ -53,6 +55,6 @@ class SecurityConfig(
             .anyRequest().authenticated()
 
             .and()
-            .apply(JwtSecurityConfig(tokenProvider, jwtUserRepository))
+            .apply(JwtSecurityConfig(tokenProvider, jwtUserRepository, redisRepository))
     }
 }

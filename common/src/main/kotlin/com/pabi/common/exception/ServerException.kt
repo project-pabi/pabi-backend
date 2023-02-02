@@ -14,7 +14,7 @@ data class DuplicateUserEmailException(
 ) : ServerException(200, message)
 
 data class NotFoundUserEmailException(
-    override val message: String = "존해 하지 않는 유저 이메일 입니다."
+    override val message: String = "존재 하지 않는 유저 이메일 입니다."
 ) : ServerException(200, message)
 
 data class NotFoundUserException(
