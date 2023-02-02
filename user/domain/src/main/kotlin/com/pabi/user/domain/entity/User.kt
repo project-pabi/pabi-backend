@@ -29,6 +29,10 @@ class User(
     var withdrawal: Boolean = false,
 
     var roles: String,
+
+    var profileComment: String,
+
+    var rating : Float,
 ) {
 
     fun signIn(password: String) {
