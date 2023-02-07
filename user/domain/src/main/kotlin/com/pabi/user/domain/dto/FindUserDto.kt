@@ -17,7 +17,7 @@ class FindUserDto {
     )
 
     companion object {
-        fun FindUserEntityToInfo(user: User): FindUserDto.FindUserInfo {
+        fun findUserToInfo(user: User): FindUserInfo {
             return FindUserInfo(
                     email = user.email,
                     nickName = user.nickName,

@@ -9,5 +9,5 @@ class FindUserFacade(
     private val FindUserService: FindUserService,
 ) {
 
-    fun FindUser(command: FindUserDto.FindUserCommand) = FindUserService.FindUser(command)
+    fun findUser(command: FindUserDto.FindUserCommand) = FindUserService.findUser(command)
 }

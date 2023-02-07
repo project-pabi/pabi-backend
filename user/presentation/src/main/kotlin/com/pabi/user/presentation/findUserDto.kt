@@ -3,6 +3,7 @@ package com.pabi.user.presentation
 import com.pabi.user.domain.dto.SignInUserDto.*
 import com.pabi.common.response.Token
 import com.pabi.user.domain.dto.FindUserDto
+import com.pabi.user.domain.dto.ModifyUserDto
 import io.swagger.annotations.ApiModelProperty
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -29,20 +30,20 @@ class findUserDto {
     }
 
     data class FindUserResponse(
-        @ApiModelProperty(value = "토큰", required = true)
-        val email : String,
-        val nickName : String,
-        val profileComment : String,
-        val rating : Float
+            val email: String,
+            val nickName : String,
+            val profileComment : String,
+            val rating : Float,
     ) {
 
         constructor(
-                FindUserInfo: FindUserDto.FindUserInfo
+                findUserInfo: FindUserDto.FindUserInfo
         ) : this(
-                email = this.email,
-                 nickName = this.nickName
-                 profileComment = this.profileComment
-                 rating = this.rating
+                email = findUserInfo.email,
+                nickName = findUserInfo.nickName,
+                profileComment = findUserInfo.profileComment,
+                rating = findUserInfo.rating,
         )
+
     }
 }
