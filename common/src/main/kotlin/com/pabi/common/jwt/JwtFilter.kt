@@ -46,7 +46,7 @@ class JwtFilter(
                 log.debug("refreshToken 이 유효하지 않습니다., uri: {}", requestURI)
                 return
             }
-            val userRoles = jwtUserRepository.userRolesByEmail(email)
+            val userRoles = tokenProvider.getRolesFromToken(accessToken)
 
             val newAccessToken = tokenProvider.createAccessToken(email, userRoles)
             val authentication: Authentication = tokenProvider.getAuthentication(accessToken)

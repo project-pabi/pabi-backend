@@ -25,8 +25,8 @@ class TokenProvider(
     @Value("\${jwt.access-token-validity-in-seconds}") accessTokenValidityInSeconds: Long,
     @Value("\${jwt.refresh-token-validity-in-seconds}") refreshTokenValidityInSeconds: Long
 ) : InitializingBean {
-    private val tokenValidityInMilliseconds: Long
-    private val accessTokenValidityInMilliseconds: Long
+    private final val tokenValidityInMilliseconds: Long
+    private final val accessTokenValidityInMilliseconds: Long
     final val refreshTokenValidityInMilliseconds: Long
     private var key: Key? = null
 
@@ -56,6 +56,10 @@ class TokenProvider(
 
     fun getEmailFromToken(token: String): String {
         return getAllClaimsFromToken(token).subject
+    }
+
+    fun getRolesFromToken(token: String): String {
+        return getAllClaimsFromToken(token)["roles"].toString()
     }
 
     fun getAuthentication(token: String?): Authentication {
