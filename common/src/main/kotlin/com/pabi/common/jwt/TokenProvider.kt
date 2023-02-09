@@ -1,5 +1,7 @@
 package com.pabi.common.jwt
 
+import com.pabi.common.exception.InvalidTokenException
+import com.pabi.common.redis.RedisRepository
 import com.pabi.common.response.Token
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
@@ -12,18 +14,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
+import org.springframework.util.StringUtils
 import java.security.Key
 import java.util.*
 import java.util.stream.Collectors
+import javax.servlet.http.HttpServletRequest
 
 @Component
 class TokenProvider(
     @param:Value("\${jwt.secret}") private val secret: String,
     @Value("\${jwt.token-validity-in-seconds}") tokenValidityInMilliseconds: Long,
     @Value("\${jwt.access-token-validity-in-seconds}") accessTokenValidityInSeconds: Long,
-    @Value("\${jwt.refresh-token-validity-in-seconds}") refreshTokenValidityInSeconds: Long
+    @Value("\${jwt.refresh-token-validity-in-seconds}") refreshTokenValidityInSeconds: Long,
+    private val redisRepository: RedisRepository,
+    private val jwtUserRepository: JwtUserRepository,
 ) : InitializingBean {
     private final val tokenValidityInMilliseconds: Long
     private final val accessTokenValidityInMilliseconds: Long
@@ -80,6 +87,38 @@ class TokenProvider(
             .collect(Collectors.toList())
         val principal = User(claims.subject, "", authorities)
         return UsernamePasswordAuthenticationToken(principal, token, authorities)
+    }
+
+    fun resolveToken(request: HttpServletRequest, header: String): String? {
+        val bearerToken = request.getHeader(header)
+
+        if (!StringUtils.hasText(bearerToken)) {
+            return null
+        }
+
+        if (!bearerToken.startsWith("Bearer ")) {
+            return null
+        }
+
+        return bearerToken.substring(7)
+    }
+
+    fun tokenReissue(
+        accessToken: String,
+        refreshToken: String,
+    ): String {
+        val email = getEmailFromToken(accessToken)
+        val refreshTokenInDBMS = redisRepository.getValue(redisRepository.REFRESH_PREFIX + email)
+        if (!refreshTokenInDBMS.equals(refreshToken)) {
+            throw InvalidTokenException()
+        }
+        val userRoles = getRolesFromToken(accessToken)
+
+        val newAccessToken = createAccessToken(email, userRoles)
+        val authentication: Authentication = getAuthentication(accessToken)
+        SecurityContextHolder.getContext().authentication = authentication
+
+        return newAccessToken
     }
 
     fun validateToken(token: String?): Boolean {

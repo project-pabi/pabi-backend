@@ -21,8 +21,8 @@ class JwtFilter(
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         val requestURI = request.requestURI
 
-        val accessToken = resolveToken(request, AUTHORIZATION_HEADER)
-        val refreshToken = resolveToken(request, REFRESHTOKEN_HEADER)
+        val accessToken = tokenProvider.resolveToken(request, AUTHORIZATION_HEADER)
+        val refreshToken = tokenProvider.resolveToken(request, REFRESH_TOKEN_HEADER)
 
         if (refreshToken == null) {
             if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
@@ -40,17 +40,7 @@ class JwtFilter(
                 log.debug("accessToken 이 존재하지 않습니다., uri: {}", requestURI)
                 return
             }
-            val email = tokenProvider.getEmailFromToken(accessToken)
-            val refreshTokenInDBMS = redisRepository.getValue(redisRepository.REFRESH_PREFIX + email)
-            if (refreshTokenInDBMS != refreshToken) {
-                log.debug("refreshToken 이 유효하지 않습니다., uri: {}", requestURI)
-                return
-            }
-            val userRoles = tokenProvider.getRolesFromToken(accessToken)
-
-            val newAccessToken = tokenProvider.createAccessToken(email, userRoles)
-            val authentication: Authentication = tokenProvider.getAuthentication(accessToken)
-            SecurityContextHolder.getContext().authentication = authentication
+            val newAccessToken = tokenProvider.tokenReissue(accessToken, refreshToken)
 
             val header = response.getHeader(AUTHORIZATION_HEADER)
             if (header == null || "" == header) {
@@ -63,23 +53,9 @@ class JwtFilter(
         filterChain.doFilter(request, response)
     }
 
-    private fun resolveToken(request: HttpServletRequest, header: String): String? {
-        val bearerToken = request.getHeader(header)
-
-        if (!StringUtils.hasText(bearerToken)) {
-            return null
-        }
-
-        if (!bearerToken.startsWith("Bearer ")) {
-            return null
-        }
-
-        return bearerToken.substring(7)
-    }
-
     companion object {
         const val AUTHORIZATION_HEADER = "Authorization"
-        const val REFRESHTOKEN_HEADER = "refresh-token"
+        const val REFRESH_TOKEN_HEADER = "refresh-token"
 
     }
 }
