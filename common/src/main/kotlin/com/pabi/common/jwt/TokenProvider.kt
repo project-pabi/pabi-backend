@@ -21,7 +21,6 @@ import org.springframework.util.StringUtils
 import java.security.Key
 import java.util.*
 import java.util.stream.Collectors
-import javax.servlet.http.HttpServletRequest
 
 @Component
 class TokenProvider(
@@ -89,24 +88,24 @@ class TokenProvider(
         return UsernamePasswordAuthenticationToken(principal, token, authorities)
     }
 
-    fun resolveToken(request: HttpServletRequest, header: String): String? {
-        val bearerToken = request.getHeader(header)
+    fun resolveToken(token: String): String {
 
-        if (!StringUtils.hasText(bearerToken)) {
-            return null
+        if (!StringUtils.hasText(token)) {
+            throw InvalidTokenException()
         }
 
-        if (!bearerToken.startsWith("Bearer ")) {
-            return null
+        if (!token.startsWith("Bearer ")) {
+            throw InvalidTokenException()
         }
 
-        return bearerToken.substring(7)
+        return token.substring(7)
     }
 
     fun tokenReissue(
         accessToken: String,
         refreshToken: String,
-    ): String {
+    ): Token {
+        val createdDate = Date()
         val email = getEmailFromToken(accessToken)
         val refreshTokenInDBMS = redisRepository.getValue(redisRepository.REFRESH_PREFIX + email)
         if (!refreshTokenInDBMS.equals(refreshToken)) {
@@ -118,7 +117,13 @@ class TokenProvider(
         val authentication: Authentication = getAuthentication(accessToken)
         SecurityContextHolder.getContext().authentication = authentication
 
-        return newAccessToken
+        return Token(
+            newAccessToken,
+            refreshToken,
+            "Bearer",
+            accessTokenValidityInMilliseconds,
+            createdDate
+        )
     }
 
     fun validateToken(token: String?): Boolean {

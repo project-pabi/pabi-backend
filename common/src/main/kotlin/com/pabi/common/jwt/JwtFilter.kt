@@ -21,8 +21,8 @@ class JwtFilter(
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         val requestURI = request.requestURI
 
-        val accessToken = tokenProvider.resolveToken(request, AUTHORIZATION_HEADER)
-        val refreshToken = tokenProvider.resolveToken(request, REFRESH_TOKEN_HEADER)
+        val accessToken = tokenProvider.resolveToken(request.getHeader(AUTHORIZATION_HEADER))
+        val refreshToken = tokenProvider.resolveToken(request.getHeader(REFRESH_TOKEN_HEADER))
 
         if (refreshToken == null) {
             if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
