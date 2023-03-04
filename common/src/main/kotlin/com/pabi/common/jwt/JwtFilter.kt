@@ -22,7 +22,7 @@ class JwtFilter(
         val requestURI = request.requestURI
 
         val accessToken = resolveToken(request, AUTHORIZATION_HEADER)
-        val refreshToken = resolveToken(request, REFRESHTOKEN_HEADER)
+        val refreshToken = resolveToken(request, REFRESH_TOKEN_HEADER)
 
         if (refreshToken == null) {
             if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
@@ -79,7 +79,7 @@ class JwtFilter(
 
     companion object {
         const val AUTHORIZATION_HEADER = "Authorization"
-        const val REFRESHTOKEN_HEADER = "refresh-token"
+        const val REFRESH_TOKEN_HEADER = "Refresh-Token"
 
     }
 }
