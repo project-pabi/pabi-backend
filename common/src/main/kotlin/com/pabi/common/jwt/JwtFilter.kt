@@ -40,11 +40,12 @@ class JwtFilter(
                 log.debug("accessToken 이 존재하지 않습니다., uri: {}", requestURI)
                 return
             }
+            
             val newAccessToken = tokenProvider.tokenReissue(accessToken, refreshToken)
 
             val header = response.getHeader(AUTHORIZATION_HEADER)
             if (header == null || "" == header) {
-                response.addHeader(AUTHORIZATION_HEADER, newAccessToken)
+                response.addHeader(AUTHORIZATION_HEADER, newAccessToken.accessToken)
             }
         }
 

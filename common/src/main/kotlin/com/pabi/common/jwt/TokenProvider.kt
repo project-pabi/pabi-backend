@@ -88,14 +88,17 @@ class TokenProvider(
         return UsernamePasswordAuthenticationToken(principal, token, authorities)
     }
 
-    fun resolveToken(token: String): String {
+    fun resolveToken(token: String?): String? {
+        if (token == null) {
+            return null
+        }
 
         if (!StringUtils.hasText(token)) {
-            throw InvalidTokenException()
+            return null
         }
 
         if (!token.startsWith("Bearer ")) {
-            throw InvalidTokenException()
+            return null
         }
 
         return token.substring(7)

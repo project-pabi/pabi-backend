@@ -46,7 +46,7 @@ class SecurityConfig(
             .antMatchers(
                 "/api/v1/user",
                 "/api/v1/user/sign-in",
-
+                "/api/v1/token",
                 "/swagger-ui/**",
                 "/swagger-resources/**",
                 "/v2/api-docs",
