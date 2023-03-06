@@ -15,8 +15,6 @@ class FindUserDto {
             val profileComment: String,
             val rating: Float,
     )
-
-    companion object {
         fun findUserToInfo(user: User): FindUserInfo {
             return FindUserInfo(
                     email = user.email,
@@ -24,7 +22,6 @@ class FindUserDto {
                     profileComment = user.profileComment,
                     rating = user.rating
             )
-        }
     }
 
 }
