@@ -64,6 +64,10 @@ class TokenProvider(
         return getAllClaimsFromToken(token).subject
     }
 
+    fun getExpirationFromToken(token: String): Date {
+        return getAllClaimsFromToken(token).expiration
+    }
+
     fun getRolesFromToken(token: String): String {
         return getAllClaimsFromToken(token)["roles"].toString()
     }
