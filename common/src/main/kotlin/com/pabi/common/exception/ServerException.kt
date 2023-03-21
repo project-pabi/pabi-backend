@@ -5,6 +5,10 @@ sealed class ServerException(
     override val message: String,
 ) : RuntimeException(message)
 
+data class InvalidTokenException(
+    override val message: String = "유효하지 않은 토큰 입니다."
+) : ServerException(401, message)
+
 data class DuplicateUserNickNameException(
     override val message: String = "이미 존재 하는 닉네임 입니다.",
 ) : ServerException(200, message)
