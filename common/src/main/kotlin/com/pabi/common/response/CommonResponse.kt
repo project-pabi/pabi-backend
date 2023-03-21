@@ -20,6 +20,7 @@ data class CommonResponse<T>(
                 errorCode = null,
             )
         }
+        
 
         fun <T> success(data: T, message: String): CommonResponse<T> {
             return CommonResponse(
