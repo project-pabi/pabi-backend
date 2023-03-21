@@ -20,6 +20,7 @@ data class CommonResponse<T>(
                 errorCode = null,
             )
         }
+        
 
         fun fail(message: String, exceptionName: String): CommonResponse<Nothing> {
             return CommonResponse(

@@ -1,5 +1,7 @@
 package com.pabi.server
 
+import com.pabi.common.exception.NotFoundUserEmailException
+import com.pabi.common.exception.WithdrawalUserException
 import com.pabi.common.jwt.JwtUserRepository
 import com.pabi.user.infrastructure.UserJpaRepository
 import org.springframework.stereotype.Repository
@@ -16,5 +18,14 @@ class JwtUserRepositoryImpl(
         }
 
         return true
+    }
+
+    override fun userRolesByEmail(email: String): String {
+        val user = userJpaRepository.findByEmail(email) ?: throw NotFoundUserEmailException()
+        if (user.withdrawal) {
+            throw WithdrawalUserException()
+        }
+
+        return user.roles
     }
 }

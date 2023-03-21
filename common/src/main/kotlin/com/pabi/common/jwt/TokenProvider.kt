@@ -25,9 +25,9 @@ class TokenProvider(
     @Value("\${jwt.access-token-validity-in-seconds}") accessTokenValidityInSeconds: Long,
     @Value("\${jwt.refresh-token-validity-in-seconds}") refreshTokenValidityInSeconds: Long
 ) : InitializingBean {
-    private val tokenValidityInMilliseconds: Long
-    private val accessTokenValidityInMilliseconds: Long
-    val refreshTokenValidityInMilliseconds: Long
+    private final val tokenValidityInMilliseconds: Long
+    private final val accessTokenValidityInMilliseconds: Long
+    final val refreshTokenValidityInMilliseconds: Long
     private var key: Key? = null
 
     init {
@@ -56,6 +56,10 @@ class TokenProvider(
 
     fun getEmailFromToken(token: String): String {
         return getAllClaimsFromToken(token).subject
+    }
+
+    fun getRolesFromToken(token: String): String {
+        return getAllClaimsFromToken(token)["roles"].toString()
     }
 
     fun getAuthentication(token: String?): Authentication {
@@ -96,6 +100,15 @@ class TokenProvider(
         return false
     }
 
+    fun createAccessToken(email: String, roles: String): String {
+        val claims: MutableMap<String, Any?> = HashMap()
+        val createdDate = Date()
+        val accessTokenExpirationDate =
+            Date(createdDate.time + accessTokenValidityInMilliseconds * 1000)
+        claims[AUTHORITIES_KEY] = roles
+        return createToken(claims, email, accessTokenExpirationDate)
+    }
+
     private fun doGenerateToken(claims: Map<String, Any?>, email: String): Token {
         val createdDate = Date()
         val accessTokenExpirationDate =
@@ -103,20 +116,8 @@ class TokenProvider(
         val refreshTokenExpirationDate =
             Date(createdDate.time + refreshTokenValidityInMilliseconds * 1000)
 
-        val accessToken = Jwts.builder()
-            .setClaims(claims)
-            .setSubject(email)
-            .setIssuedAt(createdDate)
-            .setExpiration(accessTokenExpirationDate)
-            .signWith(key)
-            .compact()
-        val refreshToken = Jwts.builder()
-            .setClaims(claims)
-            .setSubject(email)
-            .setIssuedAt(createdDate)
-            .setExpiration(refreshTokenExpirationDate)
-            .signWith(key)
-            .compact()
+        val accessToken = createToken(claims, email, accessTokenExpirationDate)
+        val refreshToken = createToken(claims, email, refreshTokenExpirationDate)
 
         return Token(
             accessToken,
@@ -125,6 +126,18 @@ class TokenProvider(
             accessTokenValidityInMilliseconds,
             createdDate
         )
+    }
+
+    private fun createToken(claims: Map<String, Any?>, email: String, expirationDate: Date): String {
+        val createdDate = Date()
+
+        return Jwts.builder()
+            .setClaims(claims)
+            .setSubject(email)
+            .setIssuedAt(createdDate)
+            .setExpiration(expirationDate)
+            .signWith(key)
+            .compact()
     }
 
     companion object {
