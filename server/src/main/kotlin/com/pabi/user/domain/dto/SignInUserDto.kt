@@ -2,7 +2,6 @@ package com.pabi.user.domain.dto
 
 import com.pabi.common.response.Token
 
-
 class SignInUserDto {
 
     data class SignInUserCommand(
@@ -12,7 +11,5 @@ class SignInUserDto {
 
     data class SignInUserInfo(
         val token: Token,
-    ) {
-
-    }
+    )
 }

@@ -3,7 +3,11 @@ package com.pabi.common.jwt
 import com.pabi.common.exception.InvalidTokenException
 import com.pabi.common.redis.RedisRepository
 import com.pabi.common.response.Token
-import io.jsonwebtoken.*
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SecurityException
@@ -19,7 +23,8 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
 import java.security.Key
-import java.util.*
+import java.util.Arrays
+import java.util.Date
 import java.util.stream.Collectors
 
 @Component
@@ -77,7 +82,8 @@ class TokenProvider(
             .body
         val authorities: Collection<GrantedAuthority> = Arrays.stream(
             claims[AUTHORITIES_KEY].toString().split(",".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray())
+                .toTypedArray()
+        )
             .map { role: String? ->
                 SimpleGrantedAuthority(
                     role

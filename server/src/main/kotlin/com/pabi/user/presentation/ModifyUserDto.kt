@@ -3,7 +3,6 @@ package com.pabi.user.presentation
 import com.pabi.user.domain.dto.ModifyUserDto.ModifyUserCommand
 import com.pabi.user.domain.dto.ModifyUserDto.ModifyUserInfo
 import io.swagger.annotations.ApiModelProperty
-import javax.validation.constraints.Email
 
 class ModifyUserDto {
 
@@ -13,12 +12,12 @@ class ModifyUserDto {
     ) {
 
         constructor() : this(
-            nickName = "",
+            nickName = ""
         )
 
         fun toCommand(): ModifyUserCommand {
             return ModifyUserCommand(
-                nickName = nickName,
+                nickName = nickName
             )
         }
     }
@@ -35,11 +34,11 @@ class ModifyUserDto {
     ) {
 
         constructor(
-            modifyUserInfo: ModifyUserInfo
+            modifyUserInfo: ModifyUserInfo,
         ) : this(
             id = modifyUserInfo.id,
             email = modifyUserInfo.email,
-            nickName = modifyUserInfo.nickName,
+            nickName = modifyUserInfo.nickName
         )
     }
 }

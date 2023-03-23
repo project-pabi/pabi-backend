@@ -19,8 +19,11 @@ class SignInUserController(
 
     @PostMapping("/sign-in")
     @ApiOperation(value = "유저 로그인")
-    fun signInUser(@Valid @RequestBody request: SignInUserRequest):
-            CommonResponse<SignInUserResponse> {
+    fun signInUser(
+        @Valid @RequestBody
+        request: SignInUserRequest,
+    ):
+        CommonResponse<SignInUserResponse> {
         val command = request.toCommand()
         val info = signInUserFacade.signInUser(command)
         val response = SignInUserResponse(info)

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ModifyUserFacade(
-    val modifyUserService: ModifyUserService
+    val modifyUserService: ModifyUserService,
 ) {
 
     fun modifyUser(

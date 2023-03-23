@@ -8,11 +8,16 @@ import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.builders.ResponseBuilder
-import springfox.documentation.service.*
+import springfox.documentation.service.ApiInfo
+import springfox.documentation.service.ApiKey
+import springfox.documentation.service.AuthorizationScope
+import springfox.documentation.service.Response
+import springfox.documentation.service.SecurityReference
+import springfox.documentation.service.SecurityScheme
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.spring.web.plugins.Docket
-import java.util.*
+import java.util.Arrays
 
 @Configuration
 @EnableWebMvc
@@ -57,7 +62,8 @@ class SwaggerConfig {
 
     private fun defaultAuth(): List<SecurityReference>? {
         val authorizationScope = AuthorizationScope(
-            "global", "accessEverything"
+            "global",
+            "accessEverything"
         )
         val authorizationScopes = arrayOfNulls<AuthorizationScope>(1)
         authorizationScopes[0] = authorizationScope

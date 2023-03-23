@@ -1,7 +1,8 @@
 package com.pabi.user.presentation
 
-import com.pabi.user.domain.dto.SignInUserDto.*
 import com.pabi.common.response.Token
+import com.pabi.user.domain.dto.SignInUserDto.SignInUserCommand
+import com.pabi.user.domain.dto.SignInUserDto.SignInUserInfo
 import io.swagger.annotations.ApiModelProperty
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -21,7 +22,7 @@ class SignInUserDto {
         val password: String,
     ) {
 
-        constructor(): this(
+        constructor() : this(
             email = "",
             password = ""
         )
@@ -29,7 +30,7 @@ class SignInUserDto {
         fun toCommand(): SignInUserCommand {
             return SignInUserCommand(
                 email = email,
-                password = password,
+                password = password
             )
         }
     }
@@ -40,7 +41,7 @@ class SignInUserDto {
     ) {
 
         constructor(
-            signInUserInfo: SignInUserInfo
+            signInUserInfo: SignInUserInfo,
         ) : this(
             token = signInUserInfo.token
         )

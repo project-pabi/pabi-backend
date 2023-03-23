@@ -1,53 +1,106 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     id("org.springframework.boot") version "2.7.7"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    kotlin("jvm") version "1.6.21"
+    id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
+    id("io.gitlab.arturbosch.detekt") version "1.21.0"
+    id("org.jetbrains.dokka") version "1.7.20"
+
+    kotlin("jvm") version "1.7.0"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("kapt") version "1.6.21"
+    kotlin("plugin.jpa") version "1.7.0"
+    kotlin("plugin.allopen") version "1.7.0"
+    kotlin("plugin.noarg") version "1.7.0"
+}
+
+group = "com.pabi"
+version = "0.0.1-SNAPSHOT"
+
+detekt {
+    toolVersion = "1.20.0"
+    config = files("config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
 }
 
 allprojects {
     repositories {
         mavenCentral()
     }
+
+    tasks {
+        withType<Assemble> {
+            dependsOn("ktlintFormat")
+        }
+
+        withType<KotlinCompile> {
+            kotlinOptions {
+                freeCompilerArgs = listOf("-Xjsr305=strict")
+                jvmTarget = "11"
+            }
+        }
+
+        withType<Test> {
+            useJUnitPlatform()
+            systemProperty("file.encoding", "UTF-8")
+        }
+
+        withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
+            enabled = false
+        }
+    }
 }
 
 subprojects {
-    group = "com.pabi"
-    version = "0.0.1-SNAPSHOT"
-
-    apply(plugin = "kotlin")
-    apply(plugin = "kotlin-spring")
-    apply(plugin = "io.spring.dependency-management")
-    apply(plugin = "kotlin-kapt")
-    apply(plugin = "org.springframework.boot")
+    apply {
+        plugin("idea")
+        plugin("kotlin")
+        plugin("kotlin-kapt")
+        plugin("kotlin-spring")
+        plugin("org.jlleitschuh.gradle.ktlint")
+        plugin("org.springframework.boot")
+        plugin("io.spring.dependency-management")
+        plugin("org.jetbrains.dokka")
+        plugin("io.gitlab.arturbosch.detekt")
+    }
 
     java.sourceCompatibility = JavaVersion.VERSION_11
     java.targetCompatibility = JavaVersion.VERSION_11
 
-    dependencies {
-        // kotlin 로깅
-        implementation("io.github.microutils:kotlin-logging:1.12.5")
+    group = "com.pabi.${path.split(":")[1]}"
+    version = "0.0.1-SNAPSHOT"
 
-        implementation("org.springframework.boot:spring-boot-starter")
-        implementation("org.jetbrains.kotlin:kotlin-reflect")
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
-    }
+    tasks {
+        withType<Jar> {
+            archiveFileName.set(
+                project.path.split(":").drop(1).joinToString(separator = "-", postfix = "-") + project.version + ".jar"
+            )
+        }
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "11"
+        withType<BootJar> {
+            enabled = false
+        }
+
+        withType<Test> {
+            useJUnitPlatform()
+            systemProperty("file.encoding", "UTF-8")
         }
     }
 
-    tasks.withType<Test> {
-        useJUnitPlatform()
+    dependencies {}
+
+    dependencyManagement {
+        imports {
+            mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+        }
     }
 
-    tasks.jar { enabled = true }
+    configure<KtlintExtension> {
+        filter {
+            exclude { element -> element.file.path.contains("generated/") }
+        }
+    }
 }
-

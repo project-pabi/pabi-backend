@@ -12,7 +12,7 @@ class JwtAccessDeniedHandler : AccessDeniedHandler {
     override fun handle(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        accessDeniedException: AccessDeniedException?
+        accessDeniedException: AccessDeniedException?,
     ) {
         response.sendError(HttpServletResponse.SC_FORBIDDEN)
     }

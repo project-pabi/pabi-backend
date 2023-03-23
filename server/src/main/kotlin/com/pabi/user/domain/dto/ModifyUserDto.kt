@@ -14,7 +14,7 @@ class ModifyUserDto {
         val nickName: String,
     ) {
         constructor(
-            user: User
+            user: User,
         ) : this(
             id = user.id!!,
             email = user.email,

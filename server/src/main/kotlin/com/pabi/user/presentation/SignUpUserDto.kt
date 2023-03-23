@@ -1,6 +1,5 @@
 package com.pabi.user.presentation
 
-
 import com.pabi.user.domain.dto.SignUpUserDto.SignUpUserCommand
 import com.pabi.user.domain.dto.SignUpUserDto.SignUpUserInfo
 import io.swagger.annotations.ApiModelProperty
@@ -26,17 +25,17 @@ class SignUpUserDto {
         val nickName: String,
     ) {
 
-        constructor(): this (
+        constructor() : this(
             email = "",
             password = "",
-            nickName = "",
+            nickName = ""
         )
 
         fun toCommand(): SignUpUserCommand {
             return SignUpUserCommand(
                 email = email,
                 nickName = nickName,
-                password = password,
+                password = password
             )
         }
     }
@@ -53,7 +52,7 @@ class SignUpUserDto {
     ) {
 
         constructor(
-            signUpUserInfo: SignUpUserInfo
+            signUpUserInfo: SignUpUserInfo,
         ) : this(
             id = signUpUserInfo.id,
             email = signUpUserInfo.email,

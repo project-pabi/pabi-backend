@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class JwtSecurityConfig(
     private val tokenProvider: TokenProvider,
     private val jwtUserRepository: JwtUserRepository,
-    private val redisRepository: RedisRepository
+    private val redisRepository: RedisRepository,
 ) : SecurityConfigurerAdapter<DefaultSecurityFilterChain?, HttpSecurity>() {
 
     override fun configure(http: HttpSecurity) {

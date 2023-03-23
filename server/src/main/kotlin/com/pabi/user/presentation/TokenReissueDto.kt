@@ -11,7 +11,7 @@ class TokenReissueDto {
     ) {
 
         constructor(
-            tokenReissueInfo: TokenDto.TokenReissueInfo
+            tokenReissueInfo: TokenDto.TokenReissueInfo,
         ) : this(
             token = tokenReissueInfo.token
         )
