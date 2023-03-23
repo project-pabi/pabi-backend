@@ -3,6 +3,7 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
+    id("jacoco")
     id("org.springframework.boot") version "2.7.7"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
@@ -15,6 +16,10 @@ plugins {
     kotlin("plugin.jpa") version "1.7.0"
     kotlin("plugin.allopen") version "1.7.0"
     kotlin("plugin.noarg") version "1.7.0"
+}
+
+jacoco {
+    toolVersion = "0.8.8"
 }
 
 group = "com.pabi"
@@ -64,6 +69,7 @@ subprojects {
         plugin("org.springframework.boot")
         plugin("io.spring.dependency-management")
         plugin("org.jetbrains.dokka")
+        plugin("jacoco")
         plugin("io.gitlab.arturbosch.detekt")
     }
 
@@ -87,6 +93,31 @@ subprojects {
         withType<Test> {
             useJUnitPlatform()
             systemProperty("file.encoding", "UTF-8")
+
+            finalizedBy(jacocoTestReport)
+        }
+
+        jacocoTestReport {
+            reports {
+                xml.required.set(true)
+                csv.required.set(true)
+                html.required.set(true)
+            }
+            finalizedBy(jacocoTestCoverageVerification)
+        }
+
+        jacocoTestCoverageVerification {
+            violationRules {
+                rule {
+                    enabled = true
+                    element = "CLASS"
+                    limit {
+                        counter = "LINE"
+                        value = "COVEREDRATIO"
+                        minimum = "0".toBigDecimal()
+                    }
+                }
+            }
         }
     }
 
@@ -103,4 +134,8 @@ subprojects {
             exclude { element -> element.file.path.contains("generated/") }
         }
     }
+}
+
+tasks.dokkaHtmlMultiModule.configure {
+    outputDirectory.set(buildDir.resolve("$rootDir/devdocs"))
 }
