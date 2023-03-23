@@ -14,14 +14,15 @@ class FindUserDto {
             val nickName : String,
             val profileComment: String,
             val rating: Float,
-    )
-        fun findUserToInfo(user: User): FindUserInfo {
-            return FindUserInfo(
-                    email = user.email,
-                    nickName = user.nickName,
-                    profileComment = user.profileComment,
-                    rating = user.rating
-            )
+    ){
+        constructor(
+            user: User
+        ) : this(
+            email = user.email,
+            nickName = user.nickName,
+            profileComment = user.profileComment,
+            rating = user.rating,
+        )
     }
 
 }

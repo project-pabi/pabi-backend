@@ -36,7 +36,7 @@ class FindUserService(
     fun findUser(request : FindUserDto.FindUserCommand) : FindUserDto.FindUserInfo {
         with(request) {
             val user = userRepository.findByEmail(email) ?: throw NotFoundUserEmailException()
-            return FindUserDto.findUserToInfo(user);
+            return FindUserDto.FindUserInfo(user);
         }
     }
 }

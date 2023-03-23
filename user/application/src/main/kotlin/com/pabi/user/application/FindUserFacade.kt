@@ -8,6 +8,5 @@ import org.springframework.stereotype.Service
 class FindUserFacade(
     private val FindUserService: FindUserService,
 ) {
-
     fun findUser(command: FindUserDto.FindUserCommand) = FindUserService.findUser(command)
 }
