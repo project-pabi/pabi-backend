@@ -10,15 +10,18 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 class JwtFilter(
     private val tokenProvider: TokenProvider,
     private val jwtUserRepository: JwtUserRepository,
-    private val redisRepository: RedisRepository
+    private val redisRepository: RedisRepository,
 ) : OncePerRequestFilter() {
 
     private val log = KotlinLogging.logger {}
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain,
+    ) {
         val requestURI = request.requestURI
 
         val accessToken = tokenProvider.resolveToken(request.getHeader(AUTHORIZATION_HEADER))
@@ -27,7 +30,8 @@ class JwtFilter(
         if (refreshToken == null) {
             if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
                 if (jwtUserRepository.validTokenByEmail(tokenProvider.getEmailFromToken(accessToken!!))) {
-                    val authentication: Authentication = tokenProvider.getAuthentication(accessToken)
+                    val authentication: Authentication =
+                        tokenProvider.getAuthentication(accessToken)
                     SecurityContextHolder.getContext().authentication = authentication
                 }
             } else {
@@ -49,14 +53,11 @@ class JwtFilter(
             }
         }
 
-
-
         filterChain.doFilter(request, response)
     }
 
     companion object {
         const val AUTHORIZATION_HEADER = "Authorization"
         const val REFRESH_TOKEN_HEADER = "Refresh-Token"
-
     }
 }

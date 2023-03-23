@@ -5,7 +5,7 @@ import com.pabi.user.domain.entity.User
 
 class SignUpUserDto {
 
-    data class SignUpUserCommand (
+    data class SignUpUserCommand(
         val email: String,
         val password: String,
         val nickName: String,
@@ -15,7 +15,7 @@ class SignUpUserDto {
                 email = email,
                 nickName = nickName,
                 password = password,
-                roles = listOf(Role.ROLE_USER).joinToString(",") { it.toString() },
+                roles = listOf(Role.ROLE_USER).joinToString(",") { it.toString() }
             )
         }
     }
@@ -26,7 +26,7 @@ class SignUpUserDto {
         val nickName: String,
     ) {
         constructor(
-            user: User
+            user: User,
         ) : this(
             id = user.id!!,
             email = user.email,

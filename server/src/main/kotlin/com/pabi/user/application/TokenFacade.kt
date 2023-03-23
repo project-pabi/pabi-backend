@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class TokenFacade(
-    val tokenService: TokenService
+    val tokenService: TokenService,
 ) {
 
     fun tokenReissue(

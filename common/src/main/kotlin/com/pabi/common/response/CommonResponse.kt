@@ -11,23 +11,22 @@ data class CommonResponse<T>(
 
     companion object {
 
-        //status 200 + success (message가 없을 경우)
+        // status 200 + success (message가 없을 경우)
         fun <T> success(data: T): CommonResponse<T> {
             return CommonResponse(
                 result = Result.SUCCESS,
                 data = data,
                 message = "",
-                errorCode = null,
+                errorCode = null
             )
         }
-        
 
         fun <T> success(data: T, message: String): CommonResponse<T> {
             return CommonResponse(
                 result = Result.SUCCESS,
                 data = data,
                 message = message,
-                errorCode = null,
+                errorCode = null
             )
         }
 
@@ -36,7 +35,7 @@ data class CommonResponse<T>(
                 result = Result.SUCCESS,
                 data = null,
                 message = message,
-                errorCode = null,
+                errorCode = null
             )
         }
 
@@ -45,7 +44,7 @@ data class CommonResponse<T>(
                 result = Result.FAIL,
                 data = null,
                 message = message,
-                errorCode = exceptionName,
+                errorCode = exceptionName
             )
         }
 
@@ -54,7 +53,7 @@ data class CommonResponse<T>(
                 result = Result.FAIL,
                 data = null,
                 message = errorCode.getErrorMsg(),
-                errorCode = errorCode.name,
+                errorCode = errorCode.name
             )
         }
     }

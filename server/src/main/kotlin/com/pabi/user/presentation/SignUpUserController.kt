@@ -19,7 +19,10 @@ class SignUpUserController(
 
     @PostMapping
     @ApiOperation(value = "유저 생성")
-    fun signUp(@Valid @RequestBody request: SignUpUserRequest): CommonResponse<SignUpUserResponse> {
+    fun signUp(
+        @Valid @RequestBody
+        request: SignUpUserRequest,
+    ): CommonResponse<SignUpUserResponse> {
         val command = request.toCommand()
         val info = signUpUserFacade.signUp(command)
         val response = SignUpUserResponse(info)

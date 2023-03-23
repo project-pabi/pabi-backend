@@ -22,6 +22,6 @@ class TokenReissueController(
     ): CommonResponse<TokenReissueDto.TokenReissueResponse> {
         val info = tokenFacade.tokenReissue(accessToken, refreshToken)
         val response = TokenReissueDto.TokenReissueResponse(info)
-        return CommonResponse.success(response, "토큰이 재발급 되었습니다.");
+        return CommonResponse.success(response, "토큰이 재발급 되었습니다.")
     }
 }
