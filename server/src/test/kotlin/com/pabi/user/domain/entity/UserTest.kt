@@ -52,7 +52,7 @@ class UserTest : DescribeSpec({
         context("요청이 유효한 경우") {
             val user = User(nickName = "old_nickname")
 
-            it("should modify user nickname when given ModifyUserCommand with new nickname") {
+            it("유저 수정에 성공한다") {
                 val newNickname = "new_nickname"
                 val command = ModifyUserDto.ModifyUserCommand(newNickname)
                 user.modifyUser(command)
