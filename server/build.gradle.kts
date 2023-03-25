@@ -31,6 +31,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
     testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("com.jayway.jsonpath:json-path:2.6.0")
 
     // test containers
     testImplementation("org.testcontainers:testcontainers:1.17.1")
