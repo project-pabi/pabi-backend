@@ -23,17 +23,17 @@ class User(
     var uuid: String = UUID.randomUUID().toString(),
 
     @Column(unique = true)
-    var email: String,
+    var email: String = "",
 
     @Column(unique = true)
-    var nickName: String,
+    var nickName: String = "",
 
-    var password: String,
+    var password: String = "",
 
     @Column(columnDefinition = "boolean default false")
     var withdrawal: Boolean = false,
 
-    var roles: String,
+    var roles: String = "",
 ) {
 
     fun signIn(password: String) {
