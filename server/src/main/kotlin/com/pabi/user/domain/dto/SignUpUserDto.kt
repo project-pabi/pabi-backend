@@ -6,9 +6,9 @@ import com.pabi.user.domain.entity.User
 class SignUpUserDto {
 
     data class SignUpUserCommand(
-        val email: String,
-        val password: String,
-        val nickName: String,
+        val email: String = "",
+        val password: String = "",
+        val nickName: String = "",
     ) {
         fun toEntity(): User {
             return User(
@@ -21,9 +21,9 @@ class SignUpUserDto {
     }
 
     data class SignUpUserInfo(
-        val id: Long,
-        val email: String,
-        val nickName: String,
+        val id: Long = 0,
+        val email: String = "",
+        val nickName: String = "",
     ) {
         constructor(
             user: User,
