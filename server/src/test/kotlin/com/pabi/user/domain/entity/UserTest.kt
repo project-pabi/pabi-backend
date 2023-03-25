@@ -29,7 +29,7 @@ class UserTest : DescribeSpec({
                 val exception = shouldThrow<InvalidPasswordException> {
                     user.signIn("different password")
                 }
-                exception.message shouldBe "패스워드가 일치 하지 않습니다."
+                exception.message shouldBe InvalidPasswordException().message
             }
         }
 
@@ -43,7 +43,7 @@ class UserTest : DescribeSpec({
                 val exception = shouldThrow<WithdrawalUserException> {
                     user.signIn("valid password")
                 }
-                exception.message shouldBe "탈퇴한 유저 입니다."
+                exception.message shouldBe WithdrawalUserException().message
             }
         }
     }

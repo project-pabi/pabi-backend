@@ -53,7 +53,7 @@ allprojects {
             systemProperty("file.encoding", "UTF-8")
         }
 
-        withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
+        withType<BootJar> {
             enabled = false
         }
     }

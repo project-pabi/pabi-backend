@@ -24,8 +24,7 @@ class SignUpUserService(
                 }
             }
 
-            val user = toEntity()
-            userRepository.save(user)
+            val user = userRepository.save(toEntity())
 
             return SignUpUserInfo(user)
         }
