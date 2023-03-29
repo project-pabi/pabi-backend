@@ -42,7 +42,7 @@ class SecurityConfig(
             .and()
             .authorizeRequests()
             .antMatchers(
-                "/api/v1/user",
+                "/api/v1/user/profile",
                 "/api/v1/user/sign-in",
 
                 "/swagger-ui/**",

@@ -17,6 +17,7 @@ docker/redis
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+application-local.yml
 
 ### IntelliJ IDEA ###
 .idea
