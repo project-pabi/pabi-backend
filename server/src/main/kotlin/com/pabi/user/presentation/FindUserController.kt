@@ -14,7 +14,7 @@ class FindUserController(
 ) {
     @GetMapping("/profile")
     @ApiOperation(value = "유저 조회")
-    fun findUser(@Valid @RequestBody request: FindUserDto.FindUserRequest): CommonResponse<FindUserDto.FindUserResponse> {
+    fun findUser(@Valid request: FindUserDto.FindUserRequest): CommonResponse<FindUserDto.FindUserResponse> {
         val command = request.toCommand()
         val info = findUserFacade.findUser(command)
         val response = FindUserDto.FindUserResponse(info)

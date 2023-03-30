@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(project(path = ":common", configuration = "default"))
+    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
 
     runtimeOnly("org.postgresql:postgresql")
     // mysql
