@@ -24,4 +24,8 @@ class UserRepositoryImpl(
     override fun findByEmail(email: String): User? {
         return userJpaRepository.findByEmail(email)
     }
+
+    override fun findUserProfile(email: String): User? {
+        return userJpaRepository.findByEmailAndWithdrawalIsFalse(email)
+    }
 }
