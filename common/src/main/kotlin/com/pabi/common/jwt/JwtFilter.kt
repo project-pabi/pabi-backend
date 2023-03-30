@@ -1,5 +1,6 @@
 package com.pabi.common.jwt
 
+import com.pabi.common.exception.InvalidTokenException
 import com.pabi.common.redis.RedisRepository
 import mu.KotlinLogging
 import org.springframework.security.core.Authentication
@@ -26,7 +27,11 @@ class JwtFilter(
 
         val accessToken = tokenProvider.resolveToken(request.getHeader(AUTHORIZATION_HEADER))
         val refreshToken = tokenProvider.resolveToken(request.getHeader(REFRESH_TOKEN_HEADER))
-
+        accessToken?.let {
+            redisRepository.getValue(accessToken)?.let {
+                throw InvalidTokenException()
+            }
+        }
         if (refreshToken == null) {
             if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
                 if (jwtUserRepository.validTokenByEmail(tokenProvider.getEmailFromToken(accessToken!!))) {

@@ -10,6 +10,7 @@ class RedisRepository(
 ) {
 
     val REFRESH_PREFIX: String = "RT:"
+    val ACCESS_BLACK: String = "ATB:"
 
     fun setValue(key: String, value: String, timeout: Long, unit: TimeUnit) {
         val values = redisTemplate.opsForValue()
