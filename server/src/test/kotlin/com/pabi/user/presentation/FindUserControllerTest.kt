@@ -1,15 +1,11 @@
 package com.pabi.user.presentation
 
-import FindUserDto
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.pabi.common.CustomDescribeSpec
 import com.pabi.common.IntegrationTest
-import com.pabi.user.domain.dto.SignUpUserDto
-import com.pabi.user.domain.entity.User
 import com.pabi.user.domain.repository.UserRepository
 import com.pabi.user.domain.service.SignUpUserService
-import io.mockk.coEvery
 import io.mockk.mockk
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -17,8 +13,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.util.LinkedMultiValueMap
-import org.springframework.util.MultiValueMap
 
 @IntegrationTest
 class FindUserControllerTest(
