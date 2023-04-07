@@ -2,8 +2,7 @@ package com.pabi.user.presentation
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.pabi.common.CustomDescribeSpec
-import com.pabi.common.IntegrationTest
+import com.pabi.common.BaseIntegrationTest
 import com.pabi.user.presentation.SignUpUserDto.SignUpUserRequest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -11,10 +10,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@IntegrationTest
 class SignUpUserControllerTest(
     private val mockMvc: MockMvc,
-) : CustomDescribeSpec() {
+) : BaseIntegrationTest() {
 
     private val signUpUrl = "/api/v1/user"
     private val objectMapper = ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -51,6 +49,21 @@ class SignUpUserControllerTest(
                     password = "validPassword1!",
                     nickName = "validNickname"
                 )
+
+                it("새 유저를 생성한다") {
+                    // when
+                    val result = mockMvc.perform(
+                        post(signUpUrl)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+                    )
+
+                    // then
+                    result
+                        .andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
+                }
 
                 it("새 유저를 생성한다") {
                     // when
