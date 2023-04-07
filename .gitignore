@@ -4,7 +4,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-docker/postgres
 ### STS ###
 .apt_generated
 .classpath
@@ -37,7 +36,8 @@ out/
 .vscode/
 
 ### Mysql ###
-docker/mysql/**
+docker/mysql/**/gradlew check
+docker/postgres
 
 ### Redis ###
 docker/redis/**
