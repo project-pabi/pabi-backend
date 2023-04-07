@@ -37,7 +37,7 @@ class User(
 
     var profileComment: String = "",
 
-    var rating : Float = 0F,
+    var rating: Float = 0F,
 ) {
 
     fun signIn(password: String) {
