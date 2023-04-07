@@ -11,10 +11,8 @@ import io.mockk.coEvery
 import io.mockk.mockk
 
 class FindUserServiceTest : DescribeSpec({
-
     val userRepository: UserRepository = mockk()
     val findUserService = FindUserService(userRepository)
-
     describe("#FindUser") {
         context("유효한 요청일 경우") {
             // given

@@ -1,10 +1,10 @@
 package com.pabi.user.presentation
-
-import FindUserDto
 import com.pabi.common.response.CommonResponse
 import com.pabi.user.application.FindUserFacade
 import io.swagger.annotations.ApiOperation
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController

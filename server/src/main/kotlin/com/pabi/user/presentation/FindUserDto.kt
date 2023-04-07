@@ -1,3 +1,5 @@
+package com.pabi.user.presentation
+
 import io.swagger.annotations.ApiModelProperty
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -16,8 +18,8 @@ class FindUserDto {
         )
 
         fun toCommand(): com.pabi.user.domain.dto.FindUserDto.FindUserCommand {
-            return com.pabi.user.domain.dto.FindUserDto.FindUserCommand (
-                email = email,
+            return com.pabi.user.domain.dto.FindUserDto.FindUserCommand(
+                email = email
             )
         }
     }
@@ -35,7 +37,7 @@ class FindUserDto {
             email = findUserInfo.email,
             nickName = findUserInfo.nickName,
             profileComment = findUserInfo.profileComment,
-            rating = findUserInfo.rating,
+            rating = findUserInfo.rating
         )
     }
 }

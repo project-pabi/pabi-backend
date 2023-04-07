@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service
 class FindUserService(
     private val userRepository: UserRepository,
 ) {
-
-    fun findUser(request : FindUserDto.FindUserCommand) : FindUserDto.FindUserInfo {
+    fun findUser(request: FindUserDto.FindUserCommand): FindUserDto.FindUserInfo {
         with(request) {
             val user = userRepository.findUserProfile(email) ?: throw NotFoundUserEmailException()
-            return FindUserDto.FindUserInfo(user);
+            return FindUserDto.FindUserInfo(user)
         }
     }
 }
