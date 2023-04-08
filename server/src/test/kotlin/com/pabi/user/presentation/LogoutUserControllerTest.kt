@@ -31,7 +31,7 @@ class LogoutUserControllerTest(
                 val request = SignUpUserDto.SignUpUserRequest(
                     email = "logout@test.com",
                     password = "validPassword1!",
-                    nickName = "validNickname"
+                    nickName = "validNickname2"
                 )
                 val requestAccessToken =
                     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2dvdXRAdGVzdC5jb20iLCJuYW1lIjoibG9nb3V0QHRlc3QuY29tIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjUwMDAwMDAwMDB9.xsy7LSdzwzlRrei9feh9zExdBiLgTmv7zzGpYW4qTaQ"
