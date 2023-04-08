@@ -2,6 +2,7 @@ package com.pabi.user.presentation
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.jayway.jsonpath.JsonPath
 import com.pabi.common.CustomDescribeSpec
 import com.pabi.common.IntegrationTest
 import com.pabi.user.domain.repository.UserRepository
@@ -19,7 +20,7 @@ class FindUserControllerTest(
     private val mockMvc: MockMvc,
 ) : CustomDescribeSpec() {
 
-    private val findUrl = "/api/v1/user/profile"
+    private val findUrl = "/api/v1/users"
     private final val userRepository: UserRepository = mockk()
     val signUpUserService = SignUpUserService(userRepository)
     private val objectMapper = ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -30,7 +31,7 @@ class FindUserControllerTest(
                 it("Bad Request 반환") {
                     // when
                     val result = mockMvc.perform(
-                        get(findUrl).param("email", "test@test.com")
+                        get("$findUrl/99999")
                     )
 
                     // then
@@ -50,19 +51,23 @@ class FindUserControllerTest(
                         nickName = "testNicname"
                     )
 
-                    mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/user")
+                    val result1 = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/api/v1/users")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request))
                     )
 
+                    val contentAsString = result1.andReturn().response.contentAsString
+
+                    val userId = JsonPath.parse(contentAsString).read<Int>("$.data.id").toString()
+
                     // when
-                    val result = mockMvc.perform(
-                        get(findUrl).param("email", "test@test.com")
+                    val result2 = mockMvc.perform(
+                        get("$findUrl/$userId")
                     )
 
                     // then
-                    result
+                    result2
                         .andExpect(status().isOk)
                         .andExpect(jsonPath("$.result").value("SUCCESS"))
                         .andReturn()

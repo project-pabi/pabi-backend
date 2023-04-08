@@ -16,7 +16,7 @@ class SignUpUserControllerTest(
     private val mockMvc: MockMvc,
 ) : CustomDescribeSpec() {
 
-    private val signUpUrl = "/api/v1/user"
+    private val signUpUrl = "/api/v1/users"
     private val objectMapper = ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     init {

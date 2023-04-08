@@ -26,15 +26,19 @@ class UserRepositoryImplTest(
 
             result shouldBe user
         }
-        //
-        // it("조회 테스트 성공") {
-        //     val email = "test3@test3.com"
-        //     val user = User(email = email)
-        //     userRepositoryImpl.save(user)
-        //
-        //     val result = userRepositoryImpl.findUserProfile(email)
-        //
-        //     result shouldBe user
-        // }
+
+        it("조회 테스트 성공") {
+            val user = User(
+                email = "test4@test4.com",
+                nickName = "getTest",
+                rating = 2.2F
+
+            )
+
+            val save = userRepositoryImpl.save(user)
+
+            val result = save.id?.let { userRepositoryImpl.findUserProfile(it) }
+            result shouldBe save
+        }
     }
 })

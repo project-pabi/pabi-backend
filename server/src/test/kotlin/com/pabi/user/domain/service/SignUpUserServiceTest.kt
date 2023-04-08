@@ -61,7 +61,6 @@ class SignUpUserServiceTest : DescribeSpec({
                 nickName = "1",
                 email = email
             )
-
             val newNickname = "2"
             val newEmail = "new@test.com"
             val request = SignUpUserCommand(
@@ -69,7 +68,7 @@ class SignUpUserServiceTest : DescribeSpec({
                 email = newEmail
             )
             val newUser = User(
-                id = 1,
+                id = 32,
                 nickName = newNickname,
                 email = newEmail
             )

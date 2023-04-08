@@ -14,7 +14,7 @@ import java.security.Principal
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 class ModifyUserController(
     val modifyUserFacade: ModifyUserFacade,
 ) {

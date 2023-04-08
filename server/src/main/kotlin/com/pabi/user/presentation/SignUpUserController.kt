@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 @RestController
 class SignUpUserController(
     private val signUpUserFacade: SignUpUserFacade,
