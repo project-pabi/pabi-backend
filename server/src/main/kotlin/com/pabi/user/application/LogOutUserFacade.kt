@@ -8,5 +8,5 @@ class LogOutUserFacade(
     private val logOutUserService: LogOutUserService,
 ) {
 
-    fun logOutUser(email: String, accessToken: String) = logOutUserService.logOutUser(email, accessToken)
+    fun logOutUser(email: String, requestAccessToken: String) = logOutUserService.logOutUser(email, requestAccessToken)
 }

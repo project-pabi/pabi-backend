@@ -11,16 +11,16 @@ class LogOutUserService(
     private val tokenProvider: TokenProvider,
     private val redisRepository: RedisRepository,
 ) {
-    fun logOutUser(email: String, accessToken: String) {
-        val token = tokenProvider.resolveToken(accessToken)
+    fun logOutUser(email: String, requestAccessToken: String) {
+        val accessToken = tokenProvider.resolveToken(requestAccessToken)
             ?: throw InvalidTokenException()
 
         redisRepository.delValue(redisRepository.REFRESH_PREFIX + email)
 
         redisRepository.setValue(
-            token,
+            accessToken,
             redisRepository.ACCESS_BLACK + email,
-            tokenProvider.getExpirationFromToken(token).time,
+            tokenProvider.getExpirationFromToken(accessToken).time,
             TimeUnit.MILLISECONDS
         )
     }

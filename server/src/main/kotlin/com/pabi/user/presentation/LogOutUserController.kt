@@ -20,9 +20,9 @@ class LogOutUserController(
     @ApiOperation(value = "유저 로그아웃")
     fun logOutUser(
         principal: Principal,
-        @RequestHeader(JwtFilter.AUTHORIZATION_HEADER) accessToken: String,
+        @RequestHeader(JwtFilter.AUTHORIZATION_HEADER) requestAccessToken: String,
     ): CommonResponse<Nothing> {
-        logOutUserFacade.logOutUser(principal.name, accessToken)
+        logOutUserFacade.logOutUser(principal.name, requestAccessToken)
         return CommonResponse.success("로그아웃 되었습니다.")
     }
 }
