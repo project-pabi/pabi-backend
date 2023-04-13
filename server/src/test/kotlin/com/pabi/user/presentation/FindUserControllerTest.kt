@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 
 @IntegrationTest
 class FindUserControllerTest(
@@ -37,6 +38,21 @@ class FindUserControllerTest(
                     // then
                     result
                         .andExpect(jsonPath("$.result").value("FAIL"))
+                        .andReturn()
+                }
+            }
+
+            context("요청한 유저 객체가 없을 경우") {
+                it("익셉션 반환") {
+                    // when
+                    val userId = 999999999898L
+                    val result2 = mockMvc.perform(
+                        get("$findUrl/$userId")
+                    )
+                    // then
+                    result2
+                        .andExpect(status().isOk)
+                        .andExpect(jsonPath("$.errorCode").value("NotFoundUserException"))
                         .andReturn()
                 }
             }

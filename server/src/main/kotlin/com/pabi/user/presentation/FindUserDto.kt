@@ -1,4 +1,5 @@
 package com.pabi.user.presentation
+import com.pabi.user.domain.dto.FindUserDto.FindUserInfo
 
 class FindUserDto {
     data class FindUserResponse(
@@ -9,7 +10,7 @@ class FindUserDto {
     ) {
 
         constructor(
-            findUserInfo: com.pabi.user.domain.dto.FindUserDto.FindUserInfo,
+            findUserInfo: FindUserInfo,
         ) : this(
             email = findUserInfo.email,
             nickName = findUserInfo.nickName,

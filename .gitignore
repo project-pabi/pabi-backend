@@ -36,7 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
-### postgres ###
+### Postgres ###
 docker/postgres
 
 ### Redis ###

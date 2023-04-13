@@ -29,7 +29,7 @@ class FindUserServiceTest : DescribeSpec({
                 profileComment = profileComment
             )
 
-            coEvery { userRepository.findUserProfile(id) } returns user
+            coEvery { userRepository.findByIdAndWithdrawalFalse(id) } returns user
 
             it("유저 정보를 조회 한다.") {
                 // when
@@ -44,7 +44,7 @@ class FindUserServiceTest : DescribeSpec({
         context("아이디가 존재하지 않는 경우") {
             val userId = 99999L
 
-            coEvery { userRepository.findUserProfile(userId) } returns null
+            coEvery { userRepository.findByIdAndWithdrawalFalse(userId) } returns null
 
             it("실패한다") {
                 val exception = shouldThrow<NotFoundUserEmailException> {

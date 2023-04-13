@@ -7,5 +7,4 @@ interface UserRepository {
     fun findByNickNameOrEmail(nickName: String, email: String): User?
     fun save(user: User): User
     fun findByEmail(email: String): User?
-    fun findUserProfile(userId: Long): User?
 }
