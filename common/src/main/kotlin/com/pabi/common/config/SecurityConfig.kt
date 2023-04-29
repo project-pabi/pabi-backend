@@ -30,19 +30,9 @@ class SecurityConfig(
     }
 
     override fun configure(httpSecurity: HttpSecurity) {
-        httpSecurity
-            .csrf().disable()
-            .formLogin().disable()
-            .exceptionHandling()
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            .accessDeniedHandler(jwtAccessDeniedHandler)
-
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-            .and()
-            .authorizeRequests()
+        httpSecurity.csrf().disable().formLogin().disable().exceptionHandling()
+            .authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
             .antMatchers(
                 "/api/v1/user",
                 "/api/v1/user/sign-in",
@@ -50,11 +40,8 @@ class SecurityConfig(
                 "/swagger-ui/**",
                 "/swagger-resources/**",
                 "/v2/api-docs",
-                "/webjars/**",
-            ).permitAll()
-            .anyRequest().authenticated()
-
-            .and()
+                "/webjars/**"
+            ).permitAll().anyRequest().authenticated().and()
             .apply(JwtSecurityConfig(tokenProvider, jwtUserRepository, redisRepository))
     }
 }

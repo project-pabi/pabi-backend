@@ -11,15 +11,18 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 class JwtFilter(
     private val tokenProvider: TokenProvider,
     private val jwtUserRepository: JwtUserRepository,
-    private val redisRepository: RedisRepository
+    private val redisRepository: RedisRepository,
 ) : OncePerRequestFilter() {
 
     private val log = KotlinLogging.logger {}
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain,
+    ) {
         val requestURI = request.requestURI
 
         val accessToken = tokenProvider.resolveToken(request.getHeader(AUTHORIZATION_HEADER))
@@ -55,14 +58,11 @@ class JwtFilter(
             }
         }
 
-
-
         filterChain.doFilter(request, response)
     }
 
     companion object {
         const val AUTHORIZATION_HEADER = "Authorization"
         const val REFRESH_TOKEN_HEADER = "Refresh-Token"
-
     }
 }

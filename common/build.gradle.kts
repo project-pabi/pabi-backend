@@ -15,4 +15,9 @@ dependencies {
 
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    // logging
+    implementation("io.github.microutils:kotlin-logging:1.12.5")
 }
+
+tasks.bootJar { enabled = false }
